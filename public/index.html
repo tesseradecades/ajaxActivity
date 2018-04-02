@@ -1,5 +1,6 @@
 <html>
     <head>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script type="text/javascript">
             function loadInfo()
             {
@@ -23,6 +24,31 @@
                 a.open("GET",choice+".txt",true);   // This is the file which should be opened
                 a.send();
             } // fun1() close
+
+            $(document).ready(function () {
+                $('#get-data').click(function () {
+                    var showData = $('#show-data');
+
+                    $.getJSON('info.json', function (data) {
+                        console.log(data);
+
+                        var items = data.items.map(function (item) {
+                            return item.key + ': ' + item.value;
+                        });
+
+                        showData.empty();
+
+                        if (items.length) {
+                            var content = '<li>' + items.join('</li><li>') + '</li>';
+                            var list = $('<ul />').html(content);
+                            showData.append(list);
+                        }
+                    });
+
+                    showData.text('Loading the JSON file.');
+                });
+            });
+
         </script>
     </head>
     <body>
@@ -37,5 +63,8 @@
         </select><br/><br/>
         <button type="button" onclick="loadInfo()">LoadInfo</button>
         
+        <a href="#" id="get-data">Get JSON data</a>
+        <div id="show-data"></div>
+
     </body>
 </html>
