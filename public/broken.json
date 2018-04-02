@@ -1,7 +1,7 @@
 {
     "items": [
       {
-        key: "Name",
+        : "Name",
         "value": "Nathan Evans"
       },{
         key: "Age",

@@ -24,11 +24,30 @@
                 a.open("GET",choice+".txt",true);   // This is the file which should be opened
                 a.send();
             } // fun1() close
+            
+            function fetchJSONFile(path, callback) {
+                var httpRequest = new XMLHttpRequest();
+                httpRequest.onreadystatechange = function() {
+                    if (httpRequest.readyState === 4) {
+                        if (httpRequest.status === 200) {
+                            var data = '';
+                            try{
+                                data = JSON.parse(httpRequest.responseText);
+                            }catch(e){
+                                //data = JSON.parse('');
+                                alert("There was an error in parsing the JSON");
+                            }
+                            if (callback) callback(data);
+                        }
+                    }
+                };
+                httpRequest.open('GET', path);
+                httpRequest.send(); 
+            }
 
-            function loadJSONFile(fileName, showDiv){
+            function loadJSONtoDiv(fileName,showDiv){
                 var showData = $(showDiv);
-
-                $.getJSON(fileName, function (data) {
+                fetchJSONFile(fileName, function (data) {
                     console.log(data);
 
                     var items = data.items.map(function (item) {
@@ -43,17 +62,17 @@
                         showData.append(list);
                     }
                 });
-
                 showData.text('Loading the JSON file.');
             }
 
             $(document).ready(function () {
                 $('#get-data').click(function () {
-                    loadJSONFile('info.json','#show-data');
+                    loadJSONtoDiv('info.json','#show-data');
+                    
                 });
 
                 $('#get-more-data').click(function () {
-                    loadJSONFile('broken.json','#show-more-data');
+                    loadJSONtoDiv('broken.json','#show-more-data');
                 });
             });
 
