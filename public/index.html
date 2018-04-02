@@ -25,27 +25,35 @@
                 a.send();
             } // fun1() close
 
-            $(document).ready(function () {
-                $('#get-data').click(function () {
-                    var showData = $('#show-data');
+            function loadJSONFile(fileName, showDiv){
+                var showData = $(showDiv);
 
-                    $.getJSON('info.json', function (data) {
-                        console.log(data);
+                $.getJSON(fileName, function (data) {
+                    console.log(data);
 
-                        var items = data.items.map(function (item) {
-                            return item.key + ': ' + item.value;
-                        });
-
-                        showData.empty();
-
-                        if (items.length) {
-                            var content = '<li>' + items.join('</li><li>') + '</li>';
-                            var list = $('<ul />').html(content);
-                            showData.append(list);
-                        }
+                    var items = data.items.map(function (item) {
+                        return item.key + ': ' + item.value;
                     });
 
-                    showData.text('Loading the JSON file.');
+                    showData.empty();
+
+                    if (items.length) {
+                        var content = '<li>' + items.join('</li><li>') + '</li>';
+                        var list = $('<ul />').html(content);
+                        showData.append(list);
+                    }
+                });
+
+                showData.text('Loading the JSON file.');
+            }
+
+            $(document).ready(function () {
+                $('#get-data').click(function () {
+                    loadJSONFile('info.json','#show-data');
+                });
+
+                $('#get-more-data').click(function () {
+                    loadJSONFile('broken.json','#show-more-data');
                 });
             });
 
@@ -66,5 +74,7 @@
         <a href="#" id="get-data">Get JSON data</a>
         <div id="show-data"></div>
 
+        <a href="#" id="get-more-data">Get more JSON data</a>
+        <div id="show-more-data"></div>
     </body>
 </html>
