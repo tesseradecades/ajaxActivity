@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            function loadInfo()
+            {
+                var a;
+                
+                    if (window.XMLHttpRequest){// If the browser if IE7+[or]Firefox[or]Chrome[or]Opera[or]Safari
+                        a=new XMLHttpRequest();
+                    }else{//If browser is IE6, IE5
+                        a=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                
+                a.onreadystatechange=function(){
+                    if (a.readyState==4 && a.status==200){
+                        //console.log("Dan is cool");
+                        console.log(a.responseText);
+                        document.getElementById("myDiv").innerHTML=a.responseText;
+                    }
+                }
+                var info = document.getElementById('info')
+                var choice = info.options[info.selectedIndex].value;
+                a.open("GET",choice+".txt",true);   // This is the file which should be opened
+                a.send();
+            } // fun1() close
+        </script>
+    </head>
+    <body>
+        <h3>A Simple AJAX Example</h3>
+        
+        <div id="myDiv" style="width: 300px; height: 30px;">Click on the button below</div>
+        <select id="info">
+            <option value="ServerMessage" selected="selected">Choose Info</option>
+            <option value="name">Name</option>
+            <option value="age">Age</option>
+            <option value="hometown">Hometown</option>
+        </select><br/><br/>
+        <button type="button" onclick="loadInfo()">LoadInfo</button>
+        
+    </body>
+</html>
